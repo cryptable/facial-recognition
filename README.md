@@ -1,7 +1,7 @@
 Description
 ===========
 
-!(Face Recognition Architecture)[./Face-Recognition-Architecture.png]
+![Face Recognition Architecture](./Face-Recognition-Architecture.png)
 
 Setup for facial recognition support in Home Assistant. 
 We will setup a VM with the following support servers:
