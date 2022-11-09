@@ -150,10 +150,11 @@ If everything works, goto next step and install Frigate on it
 Install rtsp-server
 -------------------
 
+To transform you webcam into an IP camera.
 
 ```
 sudo apt install ffmpeg
-      sudo apt install v4l-utils
+sudo apt install v4l-utils
 ```
 
 ```
@@ -207,11 +208,24 @@ To use Frigate, you will need to install docker support on your Ubuntu Server (o
 
 See the docker site to understand the following commands, which are run. At the end it just adds the Docker repo to the Ubuntu repositories and installs docker.
 
+For Ubuntu:
+
 ```
 sudo apt-get install ca-certificates curl gnupg lsb-release
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
+
+For Raspbian:
+
+```
+sudo apt-get install ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
