@@ -150,7 +150,8 @@ If everything works, goto next step and install Frigate on it
 Install rtsp-server
 -------------------
 
-To transform you webcam into an IP camera.
+Only for the VM. You will need to configure your VM to take over your webcam.
+This will transform your webcam into an IP camera.
 
 ```
 sudo apt install ffmpeg
@@ -192,8 +193,6 @@ To start the server:
 sudo ./startup.sh
 ```
 
-
-
 - https://stackoverflow.com/questions/33800086/using-ffmpeg-to-generate-rtsp-from-webcam
 - https://github.com/aler9/rtsp-simple-server#installation
 - https://github.com/blakeblackshear/frigate/issues/1184
@@ -229,6 +228,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
+You'll need to reboot your Raspberry Pi.
 
 To allow non privileged users to use Docker:
 
