@@ -13,8 +13,8 @@ We will setup a VM with the following support servers:
 
 We will use the camera of laptop or later the camera of raspberry Pi.
 
-Install a Ubuntu Server
------------------------
+Install a Ubuntu Server (or Raspbian 64 Lite)
+---------------------------------------------
 
 Username: face
 Password: support33
@@ -150,7 +150,9 @@ If everything works, goto next step and install Frigate on it
 Install rtsp-server
 -------------------
 
-Only for the VM. You will need to configure your VM to take over your webcam.
+### Installation on VMWare
+
+For the VM. You will need to configure your VM to take over your webcam. Don't forget to take over the camera of your host PC to the guest Ubuntu system.
 This will transform your webcam into an IP camera.
 
 ```
@@ -163,7 +165,17 @@ mkdir rtsp-simple-server
 cd rtsp-simple-server
 ```
 
-scp the downloaded file into the VM.
+scp the downloaded file into the VM or:
+
+VMware:
+```
+wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_amd64.tar.gz
+```
+
+Raspberry Pi
+```
+`wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_arm64v8.tar.gz
+```
 
 startup.sh script
 
@@ -192,11 +204,38 @@ To start the server:
 ```
 sudo ./startup.sh
 ```
+#### References
 
 - https://stackoverflow.com/questions/33800086/using-ffmpeg-to-generate-rtsp-from-webcam
 - https://github.com/aler9/rtsp-simple-server#installation
 - https://github.com/blakeblackshear/frigate/issues/1184
+- VMware: https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_amd64.tar.gz
+- Raspberry Pi64: https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_arm64v8.tar.gz
 
+### Raspberry Pi
+
+We will build a rtsp server for the raspberry Pi camera.
+Enable the camera in the *raspi-config* application.
+
+
+Because we build our rspt server for the raspberry Pi camera, we need some build tools.
+
+```
+sudo apt install git cmake libasound2-dev liblog4cpp5-dev liblivemedia-dev libcamera-apps-lite
+```
+
+Clone the source code.
+
+```
+git clone https://github.com/mpromonet/v4l2rtspserver.git
+```
+
+
+#### References
+
+- https://www.raspberrypi.com/documentation/accessories/camera.html
+- https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/
+- https://kevinsaye.wordpress.com/2018/10/17/making-a-rtsp-server-out-of-a-raspberry-pi-in-15-minutes-or-less/
 
 Install Frigate
 ---------------
@@ -405,6 +444,12 @@ services:
       - 3000:3000
 ```
 
+Start Double Take:
+
+```
+sudo docker compose up
+```
+
 
 You need configure the Double Take with:
 - the MQTT system settings
@@ -434,9 +479,116 @@ detectors:
 - https://www.youtube.com/watch?v=_61-hIL1AjQ
 - https://hub.docker.com/r/jakowenko/double-take
 
+Integration of ESP32-CAM
+------------------------
+
+You install the camera web server onto the ESP32-CAM. This allows you to use the the web interface of the camera, but also the mpeg video stream of the camera. This mpeg video stream can be integrated using the configuration in frigate as [MPEG-strem camera](https://docs.frigate.video/configuration/camera_specific/)
+
+We call this the front camera (front-door):
+
+```
+  front:
+    ffmpeg:
+      inputs:
+        - path: http://192.168.0.216:81/stream
+          roles:
+            - detect
+            - rtmp
+      input_args: -avoid_negative_ts make_zero -fflags nobuffer -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -use_wallclock_as_timestamps 1 -c:v mjpeg
+      output_args:
+        record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
+        rtmp: -c:v libx264 -an -f flv
+    detect:
+      width: 1280
+      height: 720
+```
+
+Here you see the IP address of the ESP32-CAM, when it is connected to your Wifi network.
+
+References:
+
+- https://docs.frigate.video/configuration/camera_specific/
+
+
+Starting from the OVA-file
+--------------------------
+
+The network adapter must be an "e1000" to see the "ens33" adapter in Linux.
+
+When you have downloaded the OVA-file with the installed packages (rtsp-simple-server, Frigate, CompreFace and Double Take ), then you need to perform only the configuration of IP addresses. You need to change the IP addresses to the IP addresses of your guest OS.
+
+To get the IP address:
+
+```
+ip a
+```
+
+Search for "ens33" to get its IP address.
+
+Now you can ssh into the guest OS from a terminal:
+
+```
+ssh face@<IP address>
+```
+
+Password: support.
+
+goto directory ./rtsp-simple-server and change the ip-adressen in the start.sh file. When changed, run:
+
+```
+sudo ./start.sh
+```
+
+Ssh into the guest from a second terminal and configure frigate:
+
+```
+sudo vi /etc/frigate/frigate.yml
+```
+
+Change all the IP addresses and start frigate:
+
+```
+cd frigate
+sudo docker compose up
+```
+
+Ssh into the guest from a third terminal to start CompreFace:
+
+```
+cd compreface
+sudo docker compose up
+```
+
+Ssh into the guest from a fourth terminal to start DoubleTake:
+
+```
+cd double-take
+sudo docker compose up
+```
+
+You can now go to Double Take: http://<host ip address>:3000/config to configure it:
+
+```
+mqtt:
+  host: 192.168.50.178
+
+frigate:
+  url: http://192.168.50.178:5000
+
+detectors:
+  compreface:
+    url: http://192.168.50.178:8000
+    key: <API-key from CompreFace>
+```
+
+Don't forget to change the IP addresses to your Guest IP.
+
+Next time you'll need only to start the rtsp-simple-server, because all other processes will be automatically started by docker.
+
+
 Challenges
 ----------
 
-- Try the whole process on a Raspberry Pi.
-- Replace CompreFace with DeepStack
+- Try the whole process on a Raspberry Pi (need a Pi with minimal 4G memory). 
+- Replace CompreFace with DeepStack 
 - Instead of Facial recognition, try number plate recognition.
