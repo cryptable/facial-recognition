@@ -312,7 +312,7 @@ services:
     container_name: frigate
     privileged: true # this may not be necessary for all setups
     restart: unless-stopped
-    image: blakeblackshear/frigate:stable
+    image: blakeblackshear/frigate:0.11.1
     shm_size: "64mb" # update for your cameras based on calculation above
     devices:
       - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
