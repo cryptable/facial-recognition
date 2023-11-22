@@ -592,3 +592,10 @@ Challenges
 - Try the whole process on a Raspberry Pi (need a Pi with minimal 4G memory). 
 - Replace CompreFace with DeepStack 
 - Instead of Facial recognition, try number plate recognition.
+
+Notes
+-----
+
+- https://www.gyan.dev/ffmpeg/builds/
+- https://gist.github.com/edjdavid/513cbee3f9a10cd06e9e49e8bdfa0f96
+
