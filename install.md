@@ -183,7 +183,7 @@ startup.sh script
 
 export rtspServer=192.168.50.178:rtsp://192.168.50.178:8554/stream
 ./rtsp-simple-server &
-sudo ffmpeg -f v4l2 -framerate 24 -video_size 480x480 -i /dev/video0 -f rtsp -vcodec h264 -rtsp_transport tcp rtsp://192.168.50.178:8554/stream
+sudo ffmpeg -framerate 24 -video_size 480x480 -i /dev/video0 -f rtsp -vcodec h264 -rtsp_transport tcp rtsp://192.168.50.178:8554/stream
 ```
 
 Make the startup script executable.
