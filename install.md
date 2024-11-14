@@ -377,7 +377,7 @@ Download the latest release: https://github.com/exadel-inc/CompreFace/releases
 You have to create a directory for compreface:
 
 ```
-cd
+wget -q -O tmp.zip 'https://github.com/exadel-inc/CompreFace/releases/download/v1.2.0/CompreFace_1.2.0.zip' && unzip tmp.zip && rm tmp.zip
 mkdir compreface
 cd compreface
 ```
@@ -385,6 +385,7 @@ cd compreface
 Copy the zip file to your vm.
 
 ```
+
 sudo apt install unzip
 unzip 
 ```
