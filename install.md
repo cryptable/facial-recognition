@@ -183,7 +183,7 @@ startup.sh script
 
 export rtspServer=192.168.50.178:rtsp://192.168.50.178:8554/stream
 ./rtsp-simple-server &
-sudo ffmpeg -f v4l2 -framerate 24 -video_size 480x480 -i /dev/video0 -f rtsp -vcodec h264 -rtsp_transport tcp rtsp://192.168.50.178:8554/stream
+sudo ffmpeg -framerate 24 -video_size 480x480 -i /dev/video0 -f rtsp -vcodec h264 -rtsp_transport tcp rtsp://192.168.50.178:8554/stream
 ```
 
 Make the startup script executable.
@@ -377,7 +377,7 @@ Download the latest release: https://github.com/exadel-inc/CompreFace/releases
 You have to create a directory for compreface:
 
 ```
-cd
+wget -q -O tmp.zip 'https://github.com/exadel-inc/CompreFace/releases/download/v1.2.0/CompreFace_1.2.0.zip' && unzip tmp.zip && rm tmp.zip
 mkdir compreface
 cd compreface
 ```
@@ -385,6 +385,7 @@ cd compreface
 Copy the zip file to your vm.
 
 ```
+
 sudo apt install unzip
 unzip 
 ```
