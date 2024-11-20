@@ -314,7 +314,7 @@ vi docker-compose.yml
 Copy following text into the YAML file.
 
 ```
-version: 3.9
+version: '3.9'
 services:
   frigate:
     container_name: frigate
