@@ -314,7 +314,7 @@ vi docker-compose.yml
 Copy following text into the YAML file.
 
 ```
-version: "3.9"
+version: 3.9
 services:
   frigate:
     container_name: frigate
@@ -378,8 +378,8 @@ sudo docker compose up
 - https://www.reddit.com/r/homeassistant/comments/u20cx3/how_to_use_a_webcam_on_frigate/
 
 
-Install CompreFace
-------------------
+Install CompreFace (deprecated)
+-------------------------------
 
 Download the latest release: https://github.com/exadel-inc/CompreFace/releases
 
@@ -414,6 +414,47 @@ sudo docker compose up
 - https://github.com/exadel-inc/CompreFace
 - https://github.com/exadel-inc/CompreFace#getting-started-with-compreface
 
+Install Deepstack
+-----------------
+
+Compreface needs the AVX/AVX2 extensions on the Guest, but this doesn't work that easy. We can also use Deepstack for recognition of faces (and number plates)
+
+You have to create a directory for Deepstack:
+
+```
+cd
+mkdir deepstack
+cd deepstack
+```
+
+Create a docker-compose.yml file with following content:
+
+```
+version: '3.9'
+
+volumes:
+  deepstack:
+
+services:
+  deepstack:
+    container_name: deepstack
+    image: deepquestai/deepstack
+    restart: unless-stopped
+    volumes:
+      - deepstack:/.storage
+    ports:
+      - 8000:5000
+```
+
+Start Deepstack:
+
+```
+sudo docker compose up
+```
+
+
+### Reference
+- https://deepstack.readthedocs.io/en/latest/getting-started/index.html
 
 Install Double Take
 -------------------
@@ -437,7 +478,7 @@ vi docker-compose.yml
 And enter following text for your Double Take installation:
 
 ```
-version: '3.7'
+version: '3.9'
 
 volumes:
   double-take:
@@ -445,7 +486,7 @@ volumes:
 services:
   double-take:
     container_name: double-take
-    image: jakowenko/double-take
+    image: skrashevich/double-take
     restart: unless-stopped
     volumes:
       - double-take:/.storage
