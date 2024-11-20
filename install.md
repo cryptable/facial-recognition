@@ -33,6 +33,15 @@ sudo apt update
 sudo apt upgrade
 ```
 
+Shutdown the new Guest and enable AVX/AVX2 extensions voor de 'Facial Recognition' guest OS
+
+```
+cd 'C:\Program Files\Oracle\VirtualBox\'
+.\VBoxManage.exe setextradata "Facial Recognition" VBoxInternal/CPUM/IsaExts/AVX 1
+.\VBoxManage.exe setextradata "Facial Recognition" VBoxInternal/CPUM/IsaExts/AVX2 1
+```
+
+
 Install Mosquitto
 ------------------
 
