@@ -16,6 +16,8 @@ We will use the camera of laptop or later the camera of raspberry Pi.
 Installation from scratch
 -------------------------
 
+Username: face Password: support33
+
 See [Installation](./install.md)
 
 Configuring the OVA-file
