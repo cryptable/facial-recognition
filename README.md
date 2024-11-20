@@ -64,10 +64,10 @@ sudo docker compose up
 
 Frigate is now accessible through URL http://<IP>:5000
 
-Ssh into the guest from a third terminal to start CompreFace:
+Ssh into the guest from a third terminal to start Deepstack:
 
 ```
-cd compreface
+cd deepstack
 sudo docker compose up
 ```
 
@@ -88,9 +88,10 @@ frigate:
   url: http://192.168.50.178:5000
 
 detectors:
-  compreface:
+  deepstack:
     url: http://192.168.50.178:8000
-    key: <API-key from CompreFace>
+    timeout: 15
+    opencv_face_required: false
 ```
 
 Don't forget to change the IP addresses to your Guest IP.
