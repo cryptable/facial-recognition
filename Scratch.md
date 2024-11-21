@@ -21,3 +21,10 @@ In the /etc/motion/motion.
 
 - https://motion-project.github.io/3.4.1/motion_guide.html
 - https://wiki.gentoo.org/wiki/Motion
+
+TODO
+----
+
+- USB support investigation for webcam in VirtualBox
+- Add random MAC address for OVA export
+- Publish OVA-file on mega.nz
