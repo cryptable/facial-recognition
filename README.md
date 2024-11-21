@@ -46,7 +46,7 @@ Password: support.
 goto directory ./rtsp-simple-server and change the ip-adressen in the start.sh file. When changed, run:
 
 ```
-sudo ./start.sh
+sudo ./startup.sh
 ```
 
 Ssh into the guest from a second terminal and configure frigate:
