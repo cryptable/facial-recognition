@@ -41,15 +41,21 @@ Now you can ssh into the guest OS from a terminal:
 ssh face@<IP address>
 ```
 
-Password: support.
+Password: support33
 
-goto directory ./rtsp-simple-server and change the ip-adressen in the start.sh file. When changed, run:
+retrieve the IP address of your image:
+
+```
+ip a
+```
+
+goto directory ./rtsp-simple-server and change the **ip-adressen** in the start.sh file. When changed, run:
 
 ```
 sudo ./startup.sh
 ```
 
-Ssh into the guest from a second terminal and configure frigate:
+Ssh into the guest from a second terminal and configure frigate, change the IP addresses:
 
 ```
 sudo vi /etc/frigate/frigate.yml
@@ -116,3 +122,46 @@ Notes
 ./ffmpeg -f dshow -rtbufsize 1024M -framerate 30 -video_size 640x480 -vcodec mjpeg -i video="Integrated Camera" -f rtsp -rtsp_transport tcp rtsp://192.168.80.128:8554/stream
 ./ffmpeg -f dshow -rtbufsize 1024M -framerate 30 -video_size 640x480 -vcodec mjpeg -i video="UC CAM75FS-1" -f rtsp -rtsp_transport tcp rtsp://192.168.80.128:8554/stream
 ```
+
+Add your ESP32-CAM to your frigate configuration:
+
+```
+mqtt:
+  host: 192.168.1.41
+  port: 1883
+cameras:
+  front:
+    ffmpeg:
+      inputs:
+        - path: http://192.168.1.11:81/stream
+          roles:
+            - detect
+            - record
+      input_args: -avoid_negative_ts make_zero -fflags nobuffer -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -use_wallclock_as_timestamps 1 -c:v mjpeg
+      output_args:
+        record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
+        rtmp: -c:v libx264 -an -f flv
+    rtmp:
+      enabled: false
+    detect:
+      width: 640
+      height: 480
+      fps: 20
+  back:
+    ffmpeg:
+      inputs:
+        - path: rtsp://192.168.1.41:8554/stream
+          roles:
+            - detect
+            - rtmp
+      hwaccel_args: ''
+    detect:
+      width: 1280
+      height: 720
+```
+
+The *front* configuration is the ESP32-CAM. In the **path** variable, you need to replace the IP address of your ESP32-CAM
+
+The *back* configuration is your web-camera (or USB camera).
+
+
