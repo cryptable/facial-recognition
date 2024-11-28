@@ -23,9 +23,15 @@ See [Installation](./install.md)
 Configuring the OVA-file
 ------------------------
 
-The network adapter must be an "e1000" to see the "ens33" adapter in Linux.
+The network adapter must be an "e1000" to see the "enp0s3" adapter in Linux.
 
 When you have downloaded the OVA-file with the installed packages (rtsp-simple-server, Frigate, CompreFace and Double Take ), then you need to perform only the configuration of IP addresses. You need to change the IP addresses to the IP addresses of your guest OS.
+
+To retrieve your unique DHCP IP address:
+
+```
+sudo dhcpcd
+```
 
 To get the IP address:
 
@@ -33,7 +39,10 @@ To get the IP address:
 ip a
 ```
 
-Search for "ens33" to get its IP address.
+Normally it is the second IP address of the enp0s3 interface.
+
+Search for "enp0s3" to get its IP address.
+
 
 Now you can ssh into the guest OS from a terminal:
 
