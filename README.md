@@ -52,13 +52,13 @@ ssh face@<IP address>
 
 Password: support33
 
-retrieve the IP address of your image:
+retrieve the IP address of your guest:
 
 ```
 ip a
 ```
 
-goto directory ./rtsp-simple-server and change the **ip-adressen** in the start.sh file. When changed, run:
+goto directory ./rtsp-simple-server and change the **ip-adressen** in the start.sh file of the guest. When changed, run:
 
 ```
 sudo ./startup.sh
