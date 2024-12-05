@@ -70,7 +70,53 @@ Ssh into the guest from a second terminal and configure frigate, change the IP a
 sudo vi /etc/frigate/frigate.yml
 ```
 
-Change all the IP addresses and start frigate:
+With your webcam rts-server only:
+
+```
+mqtt:
+  host: 192.168.1.41
+  port: 1883
+cameras:
+  back:
+    ffmpeg:
+      inputs:
+        - path: rtsp://192.168.1.41:8554/stream
+          roles:
+            - detect
+            - rtmp
+      hwaccel_args: ''
+    detect:
+      width: 1280
+      height: 720
+```
+
+Using a ESP32-CAM camera only:
+
+```
+mqtt:
+  host: 192.168.1.41
+  port: 1883
+cameras:
+  back:
+    ffmpeg:
+      inputs:
+        - path: http://192.168.1.11:81/stream
+          roles:
+            - detect
+            - record
+      input_args: -avoid_negative_ts make_zero -fflags nobuffer -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -use_wallclock_as_timestamps 1 -c:v mjpeg
+      output_args:
+        record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
+        rtmp: -c:v libx264 -an -f flv
+    rtmp:
+      enabled: false
+    detect:
+      width: 640
+      height: 480
+      fps: 20
+```
+
+Change all the IP addresses in the above configuration and start frigate:
 
 ```
 cd frigate
@@ -132,7 +178,7 @@ Notes
 ./ffmpeg -f dshow -rtbufsize 1024M -framerate 30 -video_size 640x480 -vcodec mjpeg -i video="UC CAM75FS-1" -f rtsp -rtsp_transport tcp rtsp://192.168.80.128:8554/stream
 ```
 
-Add your ESP32-CAM to your frigate configuration:
+Using both your ESP32-CAM and the web-camera to your frigate configuration:
 
 ```
 mqtt:
