@@ -110,7 +110,7 @@ We want remote access so we need to add something to mosquitto.conf file, such t
 sudo vi /etc/mosquitto/mosquitto.conf
 ```
 
-Add the followin to the configuration file:
+Add the following to the configuration file:
 
 ```
 listener 1883 0.0.0.0
