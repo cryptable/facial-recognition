@@ -125,10 +125,10 @@ sudo docker compose up
 
 Frigate is now accessible through URL http://<IP>:5000
 
-Ssh into the guest from a third terminal to start Deepstack:
+Ssh into the guest from a third terminal to start CompreFace:
 
 ```
-cd deepstack
+cd compreface
 sudo docker compose up
 ```
 
