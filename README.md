@@ -132,6 +132,8 @@ cd compreface
 sudo docker compose up
 ```
 
+CompreFace is availabe on http://<host ip address>:8000, create an account and an API key.
+
 Ssh into the guest from a fourth terminal to start DoubleTake:
 
 ```
