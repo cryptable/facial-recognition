@@ -177,12 +177,12 @@ scp the downloaded file into the VM or:
 
 VMware:
 ```
-wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_amd64.tar.gz
+wget https://github.com/bluenviron/mediamtx/releases/download/v0.21.6/rtsp-simple-server_v0.21.6_linux_amd64.tar.gz
 ```
 
 Raspberry Pi
 ```
-`wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.20.2/rtsp-simple-server_v0.20.2_linux_arm64v8.tar.gz
+wget https://github.com/bluenviron/mediamtx/releases/download/v0.21.6/rtsp-simple-server_v0.21.6_linux_arm64v8.tar.gz
 ```
 
 startup.sh script
